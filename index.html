@@ -3,49 +3,1190 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Zam Planning & Consult</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>ZAM Planning & Consult</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --green: #4CAF27;
+      --green-dark: #3a8f1e;
+      --green-glow: rgba(76, 175, 39, 0.15);
+      --grey: #6e6e6e;
+      --grey-light: #a0a0a0;
+      --dark: #0d0d0d;
+      --dark-2: #141414;
+      --dark-3: #1a1a1a;
+      --dark-4: #222222;
+      --white: #f0f0f0;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--dark);
+      color: var(--white);
+      font-family: 'Barlow', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--dark); }
+    ::-webkit-scrollbar-thumb { background: var(--green); }
+
+    /* ── NAVBAR ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 60px;
+      height: 70px;
+      background: rgba(13,13,13,0.95);
+      border-bottom: 1px solid rgba(76,175,39,0.2);
+      backdrop-filter: blur(10px);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .nav-logo-triangle {
+      width: 0;
+      height: 0;
+      border-left: 12px solid transparent;
+      border-right: 12px solid transparent;
+      border-bottom: 22px solid var(--green);
+    }
+
+    .nav-logo-text {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 3px;
+      color: var(--white);
+    }
+
+    .nav-logo-text span { color: var(--green); }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 40px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--grey-light);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: color 0.3s;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 1px;
+      background: var(--green);
+      transition: width 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--green); }
+    .nav-links a:hover::after { width: 100%; }
+
+    .nav-cta {
+      background: var(--green);
+      color: var(--dark) !important;
+      padding: 8px 20px;
+      font-weight: 600 !important;
+      transition: background 0.3s !important;
+    }
+
+    .nav-cta:hover { background: var(--green-dark) !important; color: var(--white) !important; }
+    .nav-cta::after { display: none !important; }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      padding: 0 60px;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 60% at 70% 50%, rgba(76,175,39,0.07) 0%, transparent 70%),
+        linear-gradient(180deg, var(--dark) 0%, var(--dark-2) 100%);
+    }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(76,175,39,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(76,175,39,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 750px;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 12px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.2s;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      width: 40px; height: 1px;
+      background: var(--green);
+    }
+
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(64px, 10vw, 120px);
+      line-height: 0.95;
+      letter-spacing: 2px;
+      color: var(--white);
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.4s;
+    }
+
+    .hero-title .accent { color: var(--green); }
+
+    .hero-subtitle {
+      margin-top: 28px;
+      font-size: 16px;
+      line-height: 1.8;
+      color: var(--grey-light);
+      max-width: 480px;
+      font-weight: 300;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.6s;
+    }
+
+    .hero-buttons {
+      margin-top: 44px;
+      display: flex;
+      gap: 16px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.8s;
+    }
+
+    .btn-primary {
+      background: var(--green);
+      color: var(--dark);
+      padding: 14px 36px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+    }
+
+    .btn-primary:hover {
+      background: var(--white);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--white);
+      padding: 14px 36px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.2);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--green);
+      color: var(--green);
+    }
+
+    .hero-shape {
+      position: absolute;
+      right: -60px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border-left: 300px solid transparent;
+      border-right: 300px solid transparent;
+      border-bottom: 520px solid rgba(76,175,39,0.06);
+      opacity: 0;
+      animation: fadeIn 1.2s ease forwards 1s;
+    }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      background: var(--dark-3);
+      border-top: 1px solid rgba(76,175,39,0.15);
+      border-bottom: 1px solid rgba(76,175,39,0.15);
+      padding: 32px 60px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .stat-item {
+      text-align: center;
+      position: relative;
+    }
+
+    .stat-item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: 0; top: 10%;
+      height: 80%; width: 1px;
+      background: rgba(255,255,255,0.06);
+    }
+
+    .stat-number {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 48px;
+      color: var(--green);
+      letter-spacing: 2px;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--grey);
+      margin-top: 6px;
+    }
+
+    /* ── SECTION COMMON ── */
+    section { padding: 100px 60px; }
+
+    .section-tag {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-tag::before {
+      content: '';
+      width: 28px; height: 1px;
+      background: var(--green);
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(40px, 5vw, 64px);
+      letter-spacing: 2px;
+      line-height: 1;
+      color: var(--white);
+      margin-bottom: 20px;
+    }
+
+    .section-title .accent { color: var(--green); }
+
+    /* ── ABOUT ── */
+    #about {
+      background: var(--dark-2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #about::before {
+      content: 'ZAM';
+      position: absolute;
+      right: -20px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 280px;
+      color: rgba(76,175,39,0.03);
+      letter-spacing: 10px;
+      pointer-events: none;
+      line-height: 1;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .about-text p {
+      font-size: 15px;
+      line-height: 1.9;
+      color: var(--grey-light);
+      margin-bottom: 20px;
+    }
+
+    .about-features {
+      margin-top: 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .about-feature {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 15px;
+      letter-spacing: 1px;
+      color: var(--white);
+    }
+
+    .about-feature::before {
+      content: '▲';
+      font-size: 8px;
+      color: var(--green);
+    }
+
+    .about-visual {
+      position: relative;
+    }
+
+    .about-card {
+      background: var(--dark-3);
+      border: 1px solid rgba(76,175,39,0.15);
+      padding: 48px;
+      position: relative;
+    }
+
+    .about-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 40px; height: 3px;
+      background: var(--green);
+    }
+
+    .about-card-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 36px;
+      letter-spacing: 2px;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .about-card-sub {
+      font-size: 13px;
+      color: var(--green);
+      letter-spacing: 2px;
+      font-family: 'Barlow Condensed', sans-serif;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .about-card p {
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--grey-light);
+    }
+
+    /* ── SERVICES ── */
+    #services { background: var(--dark); }
+
+    .services-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 60px;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .service-card {
+      background: var(--dark-3);
+      padding: 44px 36px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s;
+      cursor: default;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--green);
+      transform: scaleX(0);
+      transition: transform 0.4s;
+    }
+
+    .service-card:hover {
+      background: var(--dark-4);
+      transform: translateY(-4px);
+    }
+
+    .service-card:hover::before { transform: scaleX(1); }
+
+    .service-icon {
+      width: 44px; height: 44px;
+      margin-bottom: 28px;
+      position: relative;
+    }
+
+    .service-icon .tri {
+      width: 0; height: 0;
+      border-left: 22px solid transparent;
+      border-right: 22px solid transparent;
+      border-bottom: 38px solid var(--green);
+      opacity: 0.8;
+      transition: opacity 0.3s;
+    }
+
+    .service-card:hover .tri { opacity: 1; }
+
+    .service-number {
+      position: absolute;
+      top: 36px; right: 36px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 48px;
+      color: rgba(76,175,39,0.08);
+      line-height: 1;
+      transition: color 0.4s;
+    }
+
+    .service-card:hover .service-number { color: rgba(76,175,39,0.15); }
+
+    .service-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 14px;
+    }
+
+    .service-desc {
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--grey-light);
+    }
+
+    /* ── WHY US ── */
+    #why {
+      background: var(--dark-2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+      margin-top: 60px;
+    }
+
+    .why-items {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .why-item {
+      padding: 28px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      transition: all 0.3s;
+    }
+
+    .why-item:hover { padding-left: 8px; }
+
+    .why-item-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 36px;
+      color: var(--green);
+      line-height: 1;
+      min-width: 40px;
+      opacity: 0.6;
+    }
+
+    .why-item-content h4 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .why-item-content p {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--grey-light);
+    }
+
+    .why-visual {
+      position: sticky;
+      top: 100px;
+    }
+
+    .why-big-triangle {
+      width: 100%;
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .tri-outer {
+      width: 0; height: 0;
+      border-left: 180px solid transparent;
+      border-right: 180px solid transparent;
+      border-bottom: 312px solid rgba(76,175,39,0.08);
+      position: absolute;
+    }
+
+    .tri-mid {
+      width: 0; height: 0;
+      border-left: 120px solid transparent;
+      border-right: 120px solid transparent;
+      border-bottom: 208px solid rgba(76,175,39,0.1);
+      position: absolute;
+      bottom: 52px;
+    }
+
+    .tri-inner {
+      width: 0; height: 0;
+      border-left: 60px solid transparent;
+      border-right: 60px solid transparent;
+      border-bottom: 104px solid rgba(76,175,39,0.25);
+      position: absolute;
+      bottom: 52px;
+    }
+
+    .why-center-text {
+      position: absolute;
+      bottom: 40px;
+      text-align: center;
+    }
+
+    .why-center-text strong {
+      display: block;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 52px;
+      color: var(--green);
+      line-height: 1;
+    }
+
+    .why-center-text span {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--grey);
+    }
+
+    /* ── CONTACT ── */
+    #contact {
+      background: var(--dark);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #contact::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--green), transparent);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 80px;
+      margin-top: 60px;
+    }
+
+    .contact-info h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 32px;
+      letter-spacing: 2px;
+      color: var(--white);
+      margin-bottom: 20px;
+    }
+
+    .contact-info p {
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--grey-light);
+      margin-bottom: 36px;
+    }
+
+    .contact-details {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .contact-detail {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .contact-detail-icon {
+      width: 36px; height: 36px;
+      border: 1px solid rgba(76,175,39,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--green);
+      font-size: 14px;
+    }
+
+    .contact-detail-text {
+      font-size: 14px;
+      color: var(--grey-light);
+      line-height: 1.6;
+    }
+
+    .contact-detail-text strong {
+      display: block;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--grey);
+      margin-bottom: 4px;
+      font-weight: 400;
+    }
+
+    /* FORM */
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--grey);
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      background: var(--dark-3);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--white);
+      padding: 14px 16px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.3s;
+      width: 100%;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: var(--green);
+    }
+
+    .form-group select option { background: var(--dark-3); }
+
+    .form-group textarea {
+      height: 130px;
+      resize: vertical;
+    }
+
+    .form-submit {
+      background: var(--green);
+      color: var(--dark);
+      padding: 16px 40px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+      align-self: flex-start;
+      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+    }
+
+    .form-submit:hover {
+      background: var(--white);
+      transform: translateY(-2px);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark-2);
+      border-top: 1px solid rgba(76,175,39,0.15);
+      padding: 48px 60px 32px;
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 40px;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .footer-logo-tri {
+      width: 0; height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-bottom: 18px solid var(--green);
+    }
+
+    .footer-logo-text {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px;
+      letter-spacing: 3px;
+      color: var(--white);
+    }
+
+    .footer-tagline {
+      font-size: 12px;
+      color: var(--grey);
+      letter-spacing: 1px;
+      max-width: 240px;
+      line-height: 1.6;
+    }
+
+    .footer-links h4 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 16px;
+    }
+
+    .footer-links ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-links ul a {
+      text-decoration: none;
+      font-size: 13px;
+      color: var(--grey-light);
+      transition: color 0.3s;
+    }
+
+    .footer-links ul a:hover { color: var(--green); }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-bottom p {
+      font-size: 12px;
+      color: var(--grey);
+      letter-spacing: 1px;
+    }
+
+    .footer-bottom span { color: var(--green); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 768px) {
+      nav { padding: 0 24px; }
+      .nav-links { display: none; }
+      section { padding: 70px 24px; }
+      #hero { padding: 0 24px; }
+      .hero-title { font-size: 64px; }
+      .stats-bar { grid-template-columns: repeat(2,1fr); padding: 28px 24px; }
+      .about-grid, .why-grid, .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+      .services-grid { grid-template-columns: 1fr; gap: 2px; }
+      .services-header { flex-direction: column; gap: 20px; }
+      .form-row { grid-template-columns: 1fr; }
+      .footer-top { flex-direction: column; gap: 32px; }
+      .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+      .stats-bar { padding: 28px 24px; }
+      .why-visual { display: none; }
+    }
+  </style>
 </head>
 <body>
 
   <!-- NAVBAR -->
   <nav>
-    <h1>Your Company</h1>
-    <ul>
+    <a href="#hero" class="nav-logo">
+      <div class="nav-logo-triangle"></div>
+      <span class="nav-logo-text">ZAM <span>PLANNING</span></span>
+    </a>
+    <ul class="nav-links">
       <li><a href="#about">About</a></li>
       <li><a href="#services">Services</a></li>
-      <li><a href="#contact">Contact</a></li>
+      <li><a href="#why">Why Us</a></li>
+      <li><a href="#contact" class="nav-cta">Get In Touch</a></li>
     </ul>
   </nav>
 
   <!-- HERO -->
   <section id="hero">
-    <h2>Planning & Consulting Services</h2>
-    <p>We help businesses grow with strategy and clarity.</p>
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-shape"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">Strategic Planning & Consulting</div>
+      <h1 class="hero-title">
+        Building<br/>
+        <span class="accent">Smarter</span><br/>
+        Futures
+      </h1>
+      <p class="hero-subtitle">
+        ZAM Planning & Consult delivers precise, strategic solutions to help your organisation grow with clarity, confidence, and purpose.
+      </p>
+      <div class="hero-buttons">
+        <a href="#services" class="btn-primary">Our Services</a>
+        <a href="#contact" class="btn-secondary">Contact Us</a>
+      </div>
+    </div>
   </section>
+
+  <!-- STATS BAR -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-number">10+</div>
+      <div class="stat-label">Years Experience</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">150+</div>
+      <div class="stat-label">Projects Completed</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">80+</div>
+      <div class="stat-label">Satisfied Clients</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">100%</div>
+      <div class="stat-label">Commitment</div>
+    </div>
+  </div>
 
   <!-- ABOUT -->
   <section id="about">
-    <h2>About Us</h2>
-    <p>Write your company info here.</p>
+    <div class="about-grid">
+      <div class="about-text">
+        <div class="section-tag">Who We Are</div>
+        <h2 class="section-title">Planning With <span class="accent">Purpose</span></h2>
+        <p>ZAM Planning & Consult is a professional consulting firm dedicated to delivering strategic guidance and practical planning solutions for businesses and organisations across all sectors.</p>
+        <p>We believe every organisation deserves a clear path forward. Our team brings together deep expertise, analytical rigour, and a commitment to results that matter.</p>
+        <div class="about-features">
+          <div class="about-feature">Strategic Planning & Advisory</div>
+          <div class="about-feature">Business Development Consulting</div>
+          <div class="about-feature">Organisational Planning</div>
+          <div class="about-feature">Project Management Support</div>
+        </div>
+      </div>
+      <div class="about-visual">
+        <div class="about-card">
+          <div class="about-card-title">ZAM Planning & Consult</div>
+          <div class="about-card-sub">Our Mission</div>
+          <p>To empower organisations with the strategic clarity and structured planning they need to achieve sustainable growth and lasting impact.</p>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- SERVICES -->
   <section id="services">
-    <h2>Our Services</h2>
-    <p>List your services here.</p>
+    <div class="services-header">
+      <div>
+        <div class="section-tag">What We Do</div>
+        <h2 class="section-title">Our <span class="accent">Services</span></h2>
+      </div>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-number">01</div>
+        <div class="service-icon"><div class="tri"></div></div>
+        <div class="service-title">Strategic Planning</div>
+        <p class="service-desc">Comprehensive strategic planning frameworks that align your vision with actionable, measurable goals for long-term success.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-number">02</div>
+        <div class="service-icon"><div class="tri"></div></div>
+        <div class="service-title">Business Consulting</div>
+        <p class="service-desc">Expert advisory services to help you navigate challenges, identify opportunities, and make informed business decisions.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-number">03</div>
+        <div class="service-icon"><div class="tri"></div></div>
+        <div class="service-title">Project Management</div>
+        <p class="service-desc">End-to-end project management support ensuring your initiatives are delivered on time, within scope, and on budget.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-number">04</div>
+        <div class="service-icon"><div class="tri"></div></div>
+        <div class="service-title">Organisational Development</div>
+        <p class="service-desc">Structured approaches to building stronger teams, improving processes, and developing organisational capacity.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-number">05</div>
+        <div class="service-icon"><div class="tri"></div></div>
+        <div class="service-title">Policy & Compliance</div>
+        <p class="service-desc">Guidance on regulatory compliance, policy development, and governance frameworks tailored to your industry.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-number">06</div>
+        <div class="service-icon"><div class="tri"></div></div>
+        <div class="service-title">Research & Analysis</div>
+        <p class="service-desc">In-depth research, feasibility studies, and data-driven analysis to support your most critical decisions.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY US -->
+  <section id="why">
+    <div class="section-tag">Why Choose Us</div>
+    <h2 class="section-title">The <span class="accent">ZAM</span> Difference</h2>
+    <div class="why-grid">
+      <div class="why-items">
+        <div class="why-item">
+          <div class="why-item-num">01</div>
+          <div class="why-item-content">
+            <h4>Results-Driven Approach</h4>
+            <p>Every recommendation we make is tied to measurable outcomes. We don't just advise — we deliver results you can see.</p>
+          </div>
+        </div>
+        <div class="why-item">
+          <div class="why-item-num">02</div>
+          <div class="why-item-content">
+            <h4>Tailored Solutions</h4>
+            <p>No two organisations are the same. We craft solutions specific to your context, challenges, and goals.</p>
+          </div>
+        </div>
+        <div class="why-item">
+          <div class="why-item-num">03</div>
+          <div class="why-item-content">
+            <h4>Experienced Team</h4>
+            <p>Our consultants bring years of hands-on experience across diverse sectors and complex environments.</p>
+          </div>
+        </div>
+        <div class="why-item">
+          <div class="why-item-num">04</div>
+          <div class="why-item-content">
+            <h4>Long-Term Partnership</h4>
+            <p>We build lasting relationships with our clients, supporting them beyond the initial engagement.</p>
+          </div>
+        </div>
+      </div>
+      <div class="why-visual">
+        <div class="why-big-triangle">
+          <div class="tri-outer"></div>
+          <div class="tri-mid"></div>
+          <div class="tri-inner"></div>
+          <div class="why-center-text">
+            <strong>ZAM</strong>
+            <span>Planning & Consult</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- CONTACT -->
   <section id="contact">
-    <h2>Contact Us</h2>
-    <form action="https://formspree.io/f/xgodkkvj" method="POST">
-      <input type="text" name="name" placeholder="Your Name" required />
-      <input type="email" name="email" placeholder="Your Email" required />
-      <textarea name="message" placeholder="Your Message" required></textarea>
-      <button type="submit">Send Message</button>
-    </form>
+    <div class="section-tag">Get In Touch</div>
+    <h2 class="section-title">Let's <span class="accent">Talk</span></h2>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <h3>Ready to move forward?</h3>
+        <p>Tell us about your organisation and what you're looking to achieve. Our team will get back to you within 1 business day.</p>
+        <div class="contact-details">
+          <div class="contact-detail">
+            <div class="contact-detail-icon">✉</div>
+            <div class="contact-detail-text">
+              <strong>Email</strong>
+              info@zamplanning.com
+            </div>
+          </div>
+          <div class="contact-detail">
+            <div class="contact-detail-icon">☎</div>
+            <div class="contact-detail-text">
+              <strong>Phone</strong>
+              +60 XX-XXXX XXXX
+            </div>
+          </div>
+          <div class="contact-detail">
+            <div class="contact-detail-icon">⊙</div>
+            <div class="contact-detail-text">
+              <strong>Location</strong>
+              Malaysia
+            </div>
+          </div>
+        </div>
+      </div>
+      <form class="contact-form"https://formspree.io/f/xgodkkvj" method="POST">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" name="name" placeholder="Your name" required />
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" name="email" placeholder="your@email.com" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" name="phone" placeholder="+60 XX-XXXX XXXX" />
+          </div>
+          <div class="form-group">
+            <label>Service Interested In</label>
+            <select name="service">
+              <option value="">Select a service</option>
+              <option>Strategic Planning</option>
+              <option>Business Consulting</option>
+              <option>Project Management</option>
+              <option>Organisational Development</option>
+              <option>Policy & Compliance</option>
+              <option>Research & Analysis</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea name="message" placeholder="Tell us about your project or enquiry..." required></textarea>
+        </div>
+        <button type="submit" class="form-submit">Send Message</button>
+      </form>
+    </div>
   </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">
+          <div class="footer-logo-tri"></div>
+          <span class="footer-logo-text">ZAM PLANNING & CONSULT</span>
+        </div>
+        <p class="footer-tagline">Strategic planning and consulting solutions for organisations that aim higher.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#why">Why Us</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#services">Strategic Planning</a></li>
+          <li><a href="#services">Business Consulting</a></li>
+          <li><a href="#services">Project Management</a></li>
+          <li><a href="#services">Research & Analysis</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 <span>ZAM Planning & Consult</span>. All rights reserved.</p>
+      <p>Built with purpose. Designed for results.</p>
+    </div>
+  </footer>
 
 </body>
 </html>
+```
